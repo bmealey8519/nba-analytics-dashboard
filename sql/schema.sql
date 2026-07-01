@@ -16,8 +16,30 @@ CREATE TABLE teams (
 
 	full_name VARCHAR(100) NOT NULL,
 
-	conference VARCHAR(10), 
+	conference VARCHAR(20), 
 
-	division VARCHAR(25)
+	division VARCHAR(30)
 	
+);
+
+CREATE TABLE players (
+
+    player_id INTEGER PRIMARY KEY,
+
+    first_name VARCHAR(50) NOT NULL,
+
+    last_name VARCHAR(50) NOT NULL,
+
+    full_name VARCHAR(100) NOT NULL,
+
+    birth_date DATE,
+
+    height VARCHAR(10),
+
+    weight INTEGER,
+
+    position VARCHAR(10),
+
+    active BOOLEAN NOT NULL DEFAULT TRUE
+
 );
