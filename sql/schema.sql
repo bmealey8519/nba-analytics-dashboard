@@ -1,0 +1,23 @@
+DROP TABLE IF EXISTS player_game_stats CASCADE;
+DROP TABLE IF EXISTS games CASCADE;
+DROP TABLE IF EXISTS players CASCADE;
+DROP TABLE IF EXISTS teams CASCADE;
+DROP TABLE IF EXISTS seasons CASCADE;
+
+CREATE TABLE teams (
+
+	team_id INTEGER PRIMARY KEY,
+
+	abbreviation VARCHAR(5) NOT NULL,
+
+	city VARCHAR(50) NOT NULL,
+
+	nickname VARCHAR(50) NOT NULL,
+
+	full_name VARCHAR(100) NOT NULL,
+
+	conference VARCHAR(10), 
+
+	division VARCHAR(25)
+	
+);
