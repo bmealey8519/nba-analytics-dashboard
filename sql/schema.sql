@@ -26,8 +26,6 @@ CREATE TABLE players (
 
     player_id INTEGER PRIMARY KEY,
 
-    team_id INTEGER NOT NULL,
-
     first_name VARCHAR(50) NOT NULL,
 
     last_name VARCHAR(50) NOT NULL,
@@ -42,9 +40,7 @@ CREATE TABLE players (
 
     position VARCHAR(10),
 
-    active BOOLEAN NOT NULL DEFAULT TRUE,
+    active BOOLEAN NOT NULL DEFAULT TRUE
 
-    FOREIGN KEY (team_id)
-        REFERENCES teams(team_id)
 
 );
