@@ -45,6 +45,6 @@ CREATE TABLE players (
     active BOOLEAN NOT NULL DEFAULT TRUE,
 
     FOREIGN KEY (team_id)
-        REFERENCES team(team_id)
+        REFERENCES teams(team_id)
 
 );
