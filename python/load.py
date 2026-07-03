@@ -1,5 +1,6 @@
 from db import get_connection
-from extract import get_teams, get_players
+from extract import get_teams, get_players, get_games
+from transform import transform_games
 
 
 def load_teams():
@@ -106,6 +107,69 @@ def load_players():
     print(f"Loaded {loaded} players from the NBA API.")
 
 
+def load_games():
+    raw_games = get_games("2023-24")
+    teams = get_teams()
+
+    valid_team_ids = {team["id"] for team in teams}
+
+    raw_games = raw_games[raw_games["TEAM_ID"].isin(valid_team_ids)]
+
+    games = transform_games(raw_games)
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    loaded = 0
+
+    try:
+        for _, game in games.iterrows():
+            cursor.execute(
+                """
+                INSERT INTO games (
+                    game_id,
+                    season_id,
+                    game_date,
+                    home_team_id,
+                    away_team_id,
+                    home_score,
+                    away_score
+                )
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT (game_id) DO UPDATE SET
+                    season_id = EXCLUDED.season_id,
+                    game_date = EXCLUDED.game_date,
+                    home_team_id = EXCLUDED.home_team_id,
+                    away_team_id = EXCLUDED.away_team_id,
+                    home_score = EXCLUDED.home_score,
+                    away_score = EXCLUDED.away_score;
+                """,
+                (
+                    game["game_id"],
+                    game["season_id"],
+                    game["game_date"],
+                    game["home_team_id"],
+                    game["away_team_id"],
+                    game["home_score"],
+                    game["away_score"],
+                ),
+            )
+            loaded += 1
+        conn.commit()
+
+    except Exception as e:
+        conn.rollback()
+        print(f"Error loading game: {e}")
+        raise
+
+    finally:
+        cursor.close()
+        conn.close()
+
+    print(f"Loaded {loaded} games into PostgreSQL. ")
+
+
 if __name__ == "__main__":
     load_teams()
     load_players()
+    load_games()

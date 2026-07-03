@@ -1,4 +1,4 @@
-from load import load_teams, load_players
+from load import load_teams, load_players, load_games
 
 
 def main():
@@ -7,6 +7,8 @@ def main():
     load_teams()
 
     load_players()
+
+    load_games()
 
     print("\nPipeline complete.")
 
