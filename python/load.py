@@ -1,6 +1,7 @@
 from db import get_connection
 from extract import get_teams, get_players, get_games, get_box_score
 from transform import transform_games, transform_box
+import time
 
 
 def load_teams():
@@ -123,13 +124,29 @@ def load_box(limit_games=10):
         valid_player_ids = get_existing_ids(cursor, "players", "player_id")
         valid_team_ids = get_existing_ids(cursor, "teams", "team_id")
 
-        game_ids = list(valid_game_ids)
+        cursor.execute("""
+            SELECT game_id
+            FROM games
+            ORDER BY game_date
+        """)
+        game_ids = [row[0] for row in cursor.fetchall()]
+
+        cursor.execute("""
+            SELECT DISTINCT game_id
+            FROM player_game_stats
+        """)
+        already_loaded_game_ids = {row[0] for row in cursor.fetchall()}
 
         if limit_games is not None:
             game_ids = game_ids[:limit_games]
 
-        for game_id in game_ids:
-            print(f"Loading box score for game {game_id}...")
+        for index, game_id in enumerate(game_ids, start=1):
+
+            if game_id in already_loaded_game_ids:
+                print(f"Skipping already-loaded game {game_id}")
+                continue
+
+            print(f"Loading box score {index}/{len(game_ids)}: {game_id}")
 
             boxscore = get_box_score(game_id)
             stats = transform_box(boxscore)
@@ -219,8 +236,10 @@ def load_box(limit_games=10):
                         stat["plus_minus"],
                     ),
                 )
-
+                
                 loaded += 1
+            conn.commit()    
+            time.sleep(0.75)
             
         conn.commit()
 

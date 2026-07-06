@@ -10,7 +10,7 @@ def main():
 
     load_games()
 
-    load_box(limit_games=5)
+    load_box(limit_games=None)
 
     print("\nPipeline complete.")
 
