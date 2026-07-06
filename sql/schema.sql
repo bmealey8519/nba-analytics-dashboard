@@ -68,3 +68,59 @@ CREATE TABLE games (
     FOREIGN KEY (away_team_id)
         REFERENCES teams(team_id)
 );
+
+CREATE TABLE player_game_stats (
+
+    game_id VARCHAR(20),
+
+    player_id INTEGER,
+
+    team_id INTEGER,
+
+    minutes VARCHAR(10),
+
+    points INTEGER,
+
+    rebounds INTEGER,
+
+    assists INTEGER,
+
+    steals INTEGER,
+
+    blocks INTEGER,
+
+    turnovers INTEGER,
+
+    personal_fouls INTEGER,
+
+    fgm INTEGER,
+
+    fga INTEGER,
+
+    fg_pct NUMERIC(5,3),
+
+    fg3m INTEGER,
+
+    fg3a INTEGER,
+
+    fg3_pct NUMERIC(5,3),
+
+    ftm INTEGER,
+
+    fta INTEGER,
+
+    ft_pct NUMERIC(5,3),
+
+    plus_minus INTEGER,
+
+    PRIMARY KEY (game_id, player_id),
+
+    FOREIGN KEY (game_id)
+        REFERENCES games(game_id),
+
+    FOREIGN KEY (player_id)
+        REFERENCES players(player_id),
+
+    FOREIGN KEY (team_id)
+        REFERENCES teams(team_id)
+);

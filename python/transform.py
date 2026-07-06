@@ -26,3 +26,40 @@ def transform_games(games_df):
         })
 
     return pd.DataFrame(transformed_games)
+
+
+def transform_box(box_df):
+
+    transformed_box = []
+
+    for _, row in box_df.iterrows():
+
+        transformed_box.append({
+            "game_id": row["gameId"],
+            "player_id": int(row["personId"]),
+            "team_id": int(row["teamId"]),
+            "minutes": row["minutes"],
+            "points": int(row["points"]),
+            "rebounds": int(row["reboundsTotal"]),
+            "assists": int(row["assists"]),
+            "steals": int(row["steals"]),
+            "blocks": int(row["blocks"]),
+            "turnovers": int(row["turnovers"]),
+            "personal_fouls": int(row["foulsPersonal"]),
+
+            "fgm": int(row["fieldGoalsMade"]),
+            "fga": int(row["fieldGoalsAttempted"]),
+            "fg_pct": row["fieldGoalsPercentage"],
+
+            "fg3m": int(row["threePointersMade"]),
+            "fg3a": int(row["threePointersAttempted"]),
+            "fg3_pct": row["threePointersPercentage"],
+
+            "ftm": int(row["freeThrowsMade"]),
+            "fta": int(row["freeThrowsAttempted"]),
+            "ft_pct": row["freeThrowsPercentage"],
+
+            "plus_minus": row["plusMinusPoints"]
+        })
+    
+    return pd.DataFrame(transformed_box)

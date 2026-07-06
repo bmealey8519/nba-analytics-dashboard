@@ -1,6 +1,6 @@
 from db import get_connection
-from extract import get_teams, get_players, get_games
-from transform import transform_games
+from extract import get_teams, get_players, get_games, get_box_score
+from transform import transform_games, transform_box
 
 
 def load_teams():
@@ -105,6 +105,139 @@ def load_players():
         conn.close()
 
     print(f"Loaded {loaded} players from the NBA API.")
+
+
+def get_existing_ids(cursor, table, column):
+    cursor.execute(f"SELECT {column} FROM {table}")
+    return {row[0] for row in cursor.fetchall()}
+
+def load_box(limit_games=10):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    loaded = 0
+    skipped = 0
+
+    try:
+        valid_game_ids = get_existing_ids(cursor, "games", "game_id")
+        valid_player_ids = get_existing_ids(cursor, "players", "player_id")
+        valid_team_ids = get_existing_ids(cursor, "teams", "team_id")
+
+        game_ids = list(valid_game_ids)
+
+        if limit_games is not None:
+            game_ids = game_ids[:limit_games]
+
+        for game_id in game_ids:
+            print(f"Loading box score for game {game_id}...")
+
+            boxscore = get_box_score(game_id)
+            stats = transform_box(boxscore)
+
+            for _, stat in stats.iterrows():
+
+                if (
+                    stat["game_id"] not in valid_game_ids
+                    or stat["player_id"] not in valid_player_ids
+                    or stat["team_id"] not in valid_team_ids
+                ):
+                    skipped += 1
+                    continue
+
+                cursor.execute(
+                    """
+                    INSERT INTO player_game_stats (
+                        game_id,
+                        player_id,
+                        team_id,
+                        minutes,
+                        points,
+                        rebounds,
+                        assists,
+                        steals,
+                        blocks,
+                        turnovers,
+                        personal_fouls,
+                        fgm,
+                        fga,
+                        fg_pct,
+                        fg3m,
+                        fg3a,
+                        fg3_pct,
+                        ftm,
+                        fta,
+                        ft_pct,
+                        plus_minus
+                    )
+                    VALUES (
+                        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+                        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+                        %s
+                    )
+                    ON CONFLICT (game_id, player_id) DO UPDATE SET
+                        team_id = EXCLUDED.team_id,
+                        minutes = EXCLUDED.minutes,
+                        points = EXCLUDED.points,
+                        rebounds = EXCLUDED.rebounds,
+                        assists = EXCLUDED.assists,
+                        steals = EXCLUDED.steals,
+                        blocks = EXCLUDED.blocks,
+                        turnovers = EXCLUDED.turnovers,
+                        personal_fouls = EXCLUDED.personal_fouls,
+                        fgm = EXCLUDED.fgm,
+                        fga = EXCLUDED.fga,
+                        fg_pct = EXCLUDED.fg_pct,
+                        fg3m = EXCLUDED.fg3m,
+                        fg3a = EXCLUDED.fg3a,
+                        fg3_pct = EXCLUDED.fg3_pct,
+                        ftm = EXCLUDED.ftm,
+                        fta = EXCLUDED.fta,
+                        ft_pct = EXCLUDED.ft_pct,
+                        plus_minus = EXCLUDED.plus_minus;
+                    """,
+                    (
+                        stat["game_id"],
+                        stat["player_id"],
+                        stat["team_id"],
+                        stat["minutes"],
+                        stat["points"],
+                        stat["rebounds"],
+                        stat["assists"],
+                        stat["steals"],
+                        stat["blocks"],
+                        stat["turnovers"],
+                        stat["personal_fouls"],
+                        stat["fgm"],
+                        stat["fga"],
+                        stat["fg_pct"],
+                        stat["fg3m"],
+                        stat["fg3a"],
+                        stat["fg3_pct"],
+                        stat["ftm"],
+                        stat["fta"],
+                        stat["ft_pct"],
+                        stat["plus_minus"],
+                    ),
+                )
+
+                loaded += 1
+            
+        conn.commit()
+
+    except Exception as e:
+        conn.rollback()
+        print(f"Error loading player game stats: {e}")
+        raise
+
+    finally:
+        cursor.close()
+        conn.close()
+
+    print(f"Loaded {loaded} player game stat rows.")
+    print(f"Skipped {skipped} rows due to missing foreign keys. (game_id/team_id/player_id)")
+
+
+
 
 
 def load_games():
