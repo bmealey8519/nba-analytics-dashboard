@@ -155,6 +155,8 @@ Skills demonstrated:
 
 ### Dashboard 1 — Team & Player Performance
 
+Link: https://public.tableau.com/app/profile/brandon.mealey/viz/NBA_Analytics_Dashboard/PlayerTeamOverview
+
 Features:
 
 - Team scoring comparison
@@ -166,6 +168,8 @@ Features:
 ---
 
 ### Dashboard 2 — Player Trends
+
+Link: https://public.tableau.com/app/profile/brandon.mealey/viz/NBA_Analytics_Dashboard_Continued/AdvancedPlayerPerformanceAnalytics
 
 Features:
 
