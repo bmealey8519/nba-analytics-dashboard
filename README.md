@@ -273,9 +273,12 @@ Potential future enhancements include:
 4. Create a PostgreSQL database
 5. Create a .env file using .env.example
 6. Run schema.sql
-7. Run the ETL pipeline
+   psql -d your_database_name -f sql/schema.sql
+8. Run the ETL pipeline
    python python/main.py
-8. Open the Tableau workbook or use the Tableau Public links
+9. Create the SQL views used for analysis and Tableau reporting:
+   psql -d nba_analytics -f sql/views.sql 
+11. Open the Tableau workbook or use the Tableau Public links
 
 
 
