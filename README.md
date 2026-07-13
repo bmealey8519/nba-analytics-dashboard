@@ -1,14 +1,30 @@
 # 🏀 NBA Analytics Dashboard
 
+
+
 An end-to-end data analytics project that extracts NBA statistics from the NBA API, stores them in a PostgreSQL database, analyzes player and team performance using advanced SQL, and visualizes key insights through interactive Tableau dashboards.
 
-This project demonstrates a complete analytics workflow including ETL development, relational database design, SQL analytics, and business intelligence visualization.
+This project demonstrates a complete analytics workflow including ETL development, relational database design, SQL analytics, and interactive business intelligence dashboards.
 
 ---
 
+## Dashboard Preview
+
+https://public.tableau.com/app/profile/brandon.mealey/viz/NBA_Analytics_Dashboard/PlayerTeamOverview
+<img width="1634" height="1200" alt="Screenshot 2026-07-09 093734" src="https://github.com/user-attachments/assets/9118861d-d8e1-4096-9fac-3307ce0ac60c" />
+
+---
+
+https://public.tableau.com/app/profile/brandon.mealey/viz/NBA_Analytics_Dashboard_Continued/AdvancedPlayerPerformanceAnalytics
+<img width="1613" height="1100" alt="Screenshot 2026-07-09 093740" src="https://github.com/user-attachments/assets/400f8cb2-bac2-426f-bbea-ad7ad63ddb09" />
+
+
+---
+
+
 ## Project Overview
 
-The goal of this project was to build a professional sports analytics dashboard that allows users to explore player and team performance throughout the 2023–24 NBA season.
+The goal of this project was to build a portfolio-ready sports analytics dashboard that allows users to explore player and team performance throughout the 2023–24 NBA season.
 
 The project includes:
 
@@ -21,11 +37,11 @@ The project includes:
 
 ## Key Insights
 
-- The highest-scoring teams in the 2023–24 season were the Pacers, Thunder, and Celtics.
-- Player scoring leaders were filtered by minimum games played to avoid misleading small-sample results.
-- Double-double and triple-double leaders highlighted players who contributed across multiple stat categories.
-- High-scoring streak analysis identified players who exceeded their own scoring baseline by more than one standard deviation.
-- Game-to-game scoring volatility showed which players had the biggest scoring swings.
+- The Pacers, Thunder, and Celtics ranked among the highest-scoring teams during the 2023–24 NBA season.
+- Minimum-games filters were applied to player rankings to avoid overvaluing small-sample performances.
+- Double-double and triple-double analysis highlighted players who contributed consistently across multiple stat categories.
+- High-scoring streak analysis identified players who repeatedly exceeded their own scoring baseline by more than one standard deviation.
+- Game-to-game scoring volatility revealed which players had the largest scoring swings from one appearance to the next.
   
 ---
 
@@ -226,6 +242,15 @@ Features:
 
 ---
 
+## Limitations
+
+- The project currently focuses on the 2023–24 NBA season only.
+- The analysis is based on traditional box score statistics and does not include shot location, lineup, or player tracking data.
+- Tableau dashboards are based on a static ETL extract rather than a scheduled production pipeline.
+- Player team affiliation may be simplified for players who changed teams during the season.
+
+---
+
 ## Future Improvements
 
 Potential future enhancements include:
@@ -239,19 +264,18 @@ Potential future enhancements include:
 
 ---
 
-## Dashboard Preview
+## How to Run Locally
 
-### Dashboard 1
+1. Clone the repository
+2. Create and activate a virtual environment
+3. Install dependencies
+   pip install -r requirements.txt
+4. Create a PostgreSQL database
+5. Create a .env file using .env.example
+6. Run schema.sql
+7. Run the ETL pipeline
+   python python/main.py
+8. Open the Tableau workbook or use the Tableau Public links
 
-<img width="1634" height="1200" alt="Screenshot 2026-07-09 093734" src="https://github.com/user-attachments/assets/9118861d-d8e1-4096-9fac-3307ce0ac60c" />
 
-
----
-
-### Dashboard 2
-
-<img width="1613" height="1100" alt="Screenshot 2026-07-09 093740" src="https://github.com/user-attachments/assets/400f8cb2-bac2-426f-bbea-ad7ad63ddb09" />
-
-
----
 
