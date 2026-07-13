@@ -19,6 +19,16 @@ The project includes:
 
 ---
 
+## Key Insights
+
+- The highest-scoring teams in the 2023–24 season were the Pacers, Thunder, and Celtics.
+- Player scoring leaders were filtered by minimum games played to avoid misleading small-sample results.
+- Double-double and triple-double leaders highlighted players who contributed across multiple stat categories.
+- High-scoring streak analysis identified players who exceeded their own scoring baseline by more than one standard deviation.
+- Game-to-game scoring volatility showed which players had the biggest scoring swings.
+  
+---
+
 ## Technologies Used
 
 - Python
