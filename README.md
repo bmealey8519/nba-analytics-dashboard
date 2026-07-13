@@ -268,17 +268,27 @@ Potential future enhancements include:
 
 1. Clone the repository
 2. Create and activate a virtual environment
-3. Install dependencies
-   pip install -r requirements.txt
-4. Create a PostgreSQL database
-5. Create a .env file using .env.example
-6. Run schema.sql
-   psql -d your_database_name -f sql/schema.sql
-8. Run the ETL pipeline
-   python python/main.py
-9. Create the SQL views used for analysis and Tableau reporting:
-   psql -d nba_analytics -f sql/views.sql 
-11. Open the Tableau workbook or use the Tableau Public links
+3. Install dependencies \
+\
+pip install -r requirements.txt
+
+
+5. Create a PostgreSQL database
+6. Create a .env file using .env.example
+7. Run schema.sql \
+\
+psql -d your_database_name -f sql/schema.sql
+
+
+8. Run the ETL pipeline \
+\
+python python/main.py
+
+9. Create the SQL views used for analysis and Tableau reporting: \
+\
+   psql -d nba_analytics -f sql/views.sql
+
+10. Open the Tableau workbook or use the Tableau Public links
 
 
 
